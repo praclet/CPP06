@@ -1,6 +1,6 @@
 NAME			:=	ex00
 
-SRCS			:=	
+SRCS			:=	main.cpp
 
 SRCS_DIR		:=	./srcs/
 HEADERS_DIR		:=	./headers/
@@ -18,7 +18,7 @@ OBJS			:=	$(addprefix $(OBJS_DIR), $(SRCS:.cpp=.o))
 DEP				:=	$(addprefix $(DEP_DIR), $(SRCS:.cpp=.d))
 
 CC				:=	clang++
-CFLAGS			:=	-Wall -Wextra -Werror -I$(HEADERS_DIR) -std=C++98
+CFLAGS			:=	-std=c++98 -Wall -Wextra -Werror -I$(HEADERS_DIR)
 DEPFLAGS		=	-MT $@ -MMD -MP -MF $(DEP_DIR)$*.d
 
 all				:	$(NAME)
