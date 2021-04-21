@@ -1,4 +1,4 @@
-NAME			:=	ex00
+NAME			:=	ex06
 
 SRCS			:=	main.cpp
 
@@ -26,7 +26,7 @@ all				:	$(NAME)
 $(NAME)			:	$(OBJS)
 					$(CC) $(CFLAGS) $(OBJS) -o $(NAME)
 
-$(OBJS_DIR)%.o	:	%.cpp $(DEP_DIR)%.d
+$(OBJS_DIR)%.o	:	%.cpp
 					@mkdir -p $(DEP_DIR)
 					@mkdir -p $(OBJS_DIR)
 					$(CC) $(CFLAGS) $(DEPFLAGS) -o $@ -c $<
