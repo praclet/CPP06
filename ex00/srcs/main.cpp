@@ -76,10 +76,13 @@ int main(int argc, char* argv[])
 		if (str.length() == 1)
 			value = argv[1][0];
 		else
-			if (str == "nanf" || str == "+inff" || str == "-inff" || str == "inff")
-				forScience(str);
+			if (str == "nanf" || str == "+nanf" || str == "-nanf")
+				forScience("nanf");
 			else
-				end(1);
+				if (str == "+inff" || str == "-inff" || str == "inff")
+					forScience(str);
+				else
+					end(1);
 	}
 	{
 		coutSetup("char");
