@@ -1,4 +1,4 @@
-NAME			:=	ex06
+NAME			:=	ex00
 
 SRCS			:=	main.cpp
 
