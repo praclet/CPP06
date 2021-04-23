@@ -6,7 +6,7 @@
 /*   By: praclet <praclet@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/14 14:51:26 by praclet           #+#    #+#             */
-/*   Updated: 2021/04/23 08:34:35 by praclet          ###   ########lyon.fr   */
+/*   Updated: 2021/04/23 14:01:48 by praclet          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,11 @@ int main(int argc, char* argv[])
 	}
 	char * idx;
 	std::string str(argv[1]);
+
+	for (std::size_t i = 0;i < str.length();i++)
+	{
+		str[i] = tolower(str[i]);
+	}
 
 	if (str.length() <= 0)
 		end(1);
@@ -110,7 +115,7 @@ int main(int argc, char* argv[])
 	}
 	{
 		coutSetup("float");
-		if (!isinf(value) && !isnan(value) 
+		if (!isinf(value) && !isnan(value) && value
 				&& (value < -FLT_MAX || (value > -FLT_MIN 
 				&& value < FLT_MIN) || value > FLT_MAX))
 			std::cout << "impossible";
