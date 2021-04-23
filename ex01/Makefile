@@ -1,6 +1,7 @@
 NAME			:=	ex01
 
-SRCS			:=	
+SRCS			:=	main.cpp	\	
+					Data.hpp
 
 SRCS_DIR		:=	./srcs/
 HEADERS_DIR		:=	./headers/
