@@ -6,7 +6,7 @@
 /*   By: praclet <praclet@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/14 14:51:26 by praclet           #+#    #+#             */
-/*   Updated: 2021/04/21 18:10:28 by praclet          ###   ########lyon.fr   */
+/*   Updated: 2021/04/23 08:34:35 by praclet          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,10 +79,13 @@ int main(int argc, char* argv[])
 			if (str == "nanf" || str == "+nanf" || str == "-nanf")
 				forScience("nanf");
 			else
-				if (str == "+inff" || str == "-inff" || str == "inff")
-					forScience(str);
+				if (str == "+inff" || str == "inff")
+					forScience("inff");
 				else
-					end(1);
+					if (str == "-inff")
+						forScience("-inff");
+					else
+						end(1);
 	}
 	{
 		coutSetup("char");
