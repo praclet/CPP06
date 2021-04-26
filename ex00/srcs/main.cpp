@@ -6,7 +6,7 @@
 /*   By: praclet <praclet@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/14 14:51:26 by praclet           #+#    #+#             */
-/*   Updated: 2021/04/23 14:13:28 by praclet          ###   ########lyon.fr   */
+/*   Updated: 2021/04/26 09:28:03 by praclet          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,18 +19,61 @@
 #include <iomanip>
 #include <math.h>
 
+void coutSetup(char const * type)
+{
+	std::cout << std::setw(13) << type << ": " << std::right;
+}
+
+void charPrint(double value)
+{
+	coutSetup("char");
+	if (isinf(value) || isnan(value) || value > CHAR_MAX || value < CHAR_MIN)
+		std::cout << "impossible";
+	else
+	{
+		if (!isprint(static_cast<char>(value)))
+			std::cout << "Non displayble";
+		else
+			std::cout << "'" << static_cast<char>(value) << "'";
+	}
+	std::cout << std::endl;
+}
+
+void intPrint(double value)
+{
+	coutSetup("int");
+	if (isinf(value) || isnan(value) || value > INT_MAX || value < INT_MIN)
+		std::cout << "impossible";
+	else
+		std::cout << static_cast<int>(value);
+	std::cout << std::endl;
+}
+
+void floatPrint(double value, int prec)
+{
+	coutSetup("float");
+	if (!isinf(value) && !isnan(value) && value
+			&& (value < -FLT_MAX || (value > -FLT_MIN 
+			&& value < FLT_MIN) || value > FLT_MAX))
+		std::cout << "impossible";
+	else
+		std::cout << std::setprecision(prec) << std::fixed << static_cast<float>(value) << 'f';
+	std::cout << std::endl;
+}
+
+void doublePrint(double value, int prec)
+{
+	coutSetup("double");
+	std::cout << std::setprecision(prec) << std::fixed << value << std::endl;
+}
+
 void end(int rc)
 {
 	std::cout << "Invalid value" << std::endl;
 	exit(rc);
 }
 
-void coutSetup(char const * type)
-{
-	std::cout << std::setw(13) << type << ": " << std::right;
-}
-
-void forScience(std::string const & arg)
+void _forScience(std::string const & arg)
 {
 	coutSetup("char");
 	std::cout << "impossible" << std::endl;
@@ -43,6 +86,16 @@ void forScience(std::string const & arg)
 	exit(0);
 }
 
+void forScience(std::string const & str)
+{
+	if (str == "nanf" || str == "+nanf" || str == "-nanf")
+		_forScience("nanf");
+	if (str == "+inff" || str == "inff")
+		_forScience("inff");
+	if (str == "-inff")
+		_forScience("-inff");
+}
+
 int main(int argc, char* argv[])
 {
 	if (argc !=2)
@@ -53,11 +106,10 @@ int main(int argc, char* argv[])
 	char * idx;
 	std::string str(argv[1]);
 
-	for (std::size_t i = 0;i < str.length();i++)
-		str[i] = tolower(str[i]);
-
 	if (str.length() <= 0)
 		end(1);
+	for (std::size_t i = 0;i < str.length();i++)
+		str[i] = tolower(str[i]);
 
 	double value = std::strtod(argv[1], &idx);
 	int prec = 1;
@@ -79,51 +131,17 @@ int main(int argc, char* argv[])
 		if (str.length() == 1)
 			value = argv[1][0];
 		else
-			if (str == "nanf" || str == "+nanf" || str == "-nanf")
-				forScience("nanf");
-			else
-				if (str == "+inff" || str == "inff")
-					forScience("inff");
-				else
-					if (str == "-inff")
-						forScience("-inff");
-					else
-						end(1);
-	}
-	{
-		coutSetup("char");
-		if (isinf(value) || isnan(value) || value > CHAR_MAX || value < CHAR_MIN)
-			std::cout << "impossible";
-		else
 		{
-			if (!isprint(static_cast<char>(value)))
-				std::cout << "Non displayble";
+			if (str == "nanf" || str == "+nanf" || str == "-nanf"
+				|| str == "+inff" || str == "inff" || str == "-inff")
+				forScience(str);
 			else
-				std::cout << "'" << static_cast<char>(value) << "'";
+				end(1);
 		}
-		std::cout << std::endl;
 	}
-	{
-		coutSetup("int");
-		if (isinf(value) || isnan(value) || value > INT_MAX || value < INT_MIN)
-			std::cout << "impossible";
-		else
-			std::cout << static_cast<int>(value);
-		std::cout << std::endl;
-	}
-	{
-		coutSetup("float");
-		if (!isinf(value) && !isnan(value) && value
-				&& (value < -FLT_MAX || (value > -FLT_MIN 
-				&& value < FLT_MIN) || value > FLT_MAX))
-			std::cout << "impossible";
-		else
-			std::cout << std::setprecision(prec) << std::fixed << static_cast<float>(value) << 'f';
-		std::cout << std::endl;
-	}
-	{
-		coutSetup("double");
-		std::cout << std::setprecision(prec) << std::fixed << value << std::endl;
-	}
+	charPrint(value);
+	intPrint(value);
+	floatPrint(value, prec);
+	doublePrint(value, prec);
 	return (0);
 }
