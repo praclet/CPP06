@@ -6,11 +6,12 @@
 /*   By: praclet <praclet@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/23 09:31:30 by praclet           #+#    #+#             */
-/*   Updated: 2021/04/23 10:35:24 by praclet          ###   ########lyon.fr   */
+/*   Updated: 2021/04/26 12:11:24 by praclet          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <cstdlib>
+#include <iostream>
 #include "Data.hpp"
 
 static void fillString(char * str, std::size_t size)
@@ -34,6 +35,9 @@ void * serialize(void)
 	size = rand() % 25 + 10;
 	res->rndString2 = new char[size];
 	fillString(res->rndString2, size); 
+	std::cout << "str1: '" << res->rndString1 << "'" << std::endl;
+	std::cout << " int: '" << res->rndInteger << "'" << std::endl;
+	std::cout << "str2: '" << res->rndString2 << "'" << std::endl;
 	return (reinterpret_cast<void *>(res));
 }
 

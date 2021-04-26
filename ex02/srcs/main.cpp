@@ -6,7 +6,7 @@
 /*   By: praclet <praclet@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/23 11:17:24 by praclet           #+#    #+#             */
-/*   Updated: 2021/04/23 13:41:10 by praclet          ###   ########lyon.fr   */
+/*   Updated: 2021/04/26 12:14:42 by praclet          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,21 +37,13 @@ Base * generate(void)
 void identify_from_pointer(Base * p)
 {
 	if (dynamic_cast<A *>(p))
-	{
 		std::cout << "Detecting A" << std::endl;
-		return ;
-	}
-	if (dynamic_cast<B *>(p))
-	{
+	else if (dynamic_cast<B *>(p))
 		std::cout << "Detecting B" << std::endl;
-		return ;
-	}
-	if (dynamic_cast<C *>(p))
-	{
+	else if (dynamic_cast<C *>(p))
 		std::cout << "Detecting C" << std::endl;
-		return ;
-	}
-	std::cout << "Unknown type" << std::endl;
+	else
+		std::cout << "Unknown type" << std::endl;
 }
 
 void identify_from_reference( Base & p)

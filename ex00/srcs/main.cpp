@@ -6,18 +6,17 @@
 /*   By: praclet <praclet@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/14 14:51:26 by praclet           #+#    #+#             */
-/*   Updated: 2021/04/26 09:28:03 by praclet          ###   ########lyon.fr   */
+/*   Updated: 2021/04/26 12:04:49 by praclet          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <cstdlib>
 #include <cctype>
 #include <cstring>
-#include <climits>
-#include <cfloat>
+#include <cmath>
+#include <limits>
 #include <iostream>
 #include <iomanip>
-#include <math.h>
 
 void coutSetup(char const * type)
 {
@@ -27,22 +26,21 @@ void coutSetup(char const * type)
 void charPrint(double value)
 {
 	coutSetup("char");
-	if (isinf(value) || isnan(value) || value > CHAR_MAX || value < CHAR_MIN)
+	if (isinf(value) || isnan(value) || value > std::numeric_limits<char>::max()
+			|| value < std::numeric_limits<char>::min())
 		std::cout << "impossible";
+	else if (!isprint(static_cast<char>(value)))
+		std::cout << "Non displayble";
 	else
-	{
-		if (!isprint(static_cast<char>(value)))
-			std::cout << "Non displayble";
-		else
-			std::cout << "'" << static_cast<char>(value) << "'";
-	}
+		std::cout << "'" << static_cast<char>(value) << "'";
 	std::cout << std::endl;
 }
 
 void intPrint(double value)
 {
 	coutSetup("int");
-	if (isinf(value) || isnan(value) || value > INT_MAX || value < INT_MIN)
+	if (isinf(value) || isnan(value) || value > std::numeric_limits<int>::max()
+			|| value < std::numeric_limits<int>::min())
 		std::cout << "impossible";
 	else
 		std::cout << static_cast<int>(value);
@@ -53,8 +51,8 @@ void floatPrint(double value, int prec)
 {
 	coutSetup("float");
 	if (!isinf(value) && !isnan(value) && value
-			&& (value < -FLT_MAX || (value > -FLT_MIN 
-			&& value < FLT_MIN) || value > FLT_MAX))
+			&& (value < -std::numeric_limits<float>::max()|| (value > -std::numeric_limits<float>::min()
+			&& value < std::numeric_limits<float>::min()) || value > std::numeric_limits<float>::max()))
 		std::cout << "impossible";
 	else
 		std::cout << std::setprecision(prec) << std::fixed << static_cast<float>(value) << 'f';
@@ -69,7 +67,7 @@ void doublePrint(double value, int prec)
 
 void end(int rc)
 {
-	std::cout << "Invalid value" << std::endl;
+	std::cerr << "Invalid value" << std::endl;
 	exit(rc);
 }
 
@@ -100,7 +98,7 @@ int main(int argc, char* argv[])
 {
 	if (argc !=2)
 	{
-		std::cout << "USAGE: " << argv[0] << " value" << std::endl;
+		std::cerr << "USAGE: " << argv[0] << " value" << std::endl;
 		return (1);
 	}
 	char * idx;
@@ -114,7 +112,9 @@ int main(int argc, char* argv[])
 	double value = std::strtod(argv[1], &idx);
 	int prec = 1;
 
-	if ((void*)idx == (void*)(argv[1] + str.length()))
+	if ((void*)idx == (void*)(argv[1] + str.length())
+		|| ((void*)idx == (void*)(argv[1] + str.length() - 1)
+		&& tolower(str[str.length() - 1]) == 'f'))
 	{
 		if (isspace(argv[1][0]))
 			end(1);
@@ -126,19 +126,13 @@ int main(int argc, char* argv[])
 				prec = lastDecPos - pointPos;
 		}
 	}
-	else
-	{
-		if (str.length() == 1)
+	else if (str.length() == 1)
 			value = argv[1][0];
-		else
-		{
-			if (str == "nanf" || str == "+nanf" || str == "-nanf"
-				|| str == "+inff" || str == "inff" || str == "-inff")
-				forScience(str);
-			else
-				end(1);
-		}
-	}
+	else if (str == "nanf" || str == "+nanf" || str == "-nanf"
+	|| str == "+inff" || str == "inff" || str == "-inff")
+		forScience(str);
+	else
+		end(1);
 	charPrint(value);
 	intPrint(value);
 	floatPrint(value, prec);
